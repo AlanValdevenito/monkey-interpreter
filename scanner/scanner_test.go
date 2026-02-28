@@ -113,7 +113,6 @@ func TestNextTokenWithIdentifiersAndKeywordsAndNumbers(t *testing.T) {
 }
 
 func TestNextTokenBang(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := "!"
 	tests := []struct {
 		expectedType    token.TokenType
@@ -134,7 +133,6 @@ func TestNextTokenBang(t *testing.T) {
 }
 
 func TestNextTokenMinus(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := "-"
 	tests := []struct {
 		expectedType    token.TokenType
@@ -155,7 +153,6 @@ func TestNextTokenMinus(t *testing.T) {
 }
 
 func TestNextTokenSlash(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := "/"
 	tests := []struct {
 		expectedType    token.TokenType
@@ -176,7 +173,6 @@ func TestNextTokenSlash(t *testing.T) {
 }
 
 func TestNextTokenAsterisk(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := "*"
 	tests := []struct {
 		expectedType    token.TokenType
@@ -197,7 +193,6 @@ func TestNextTokenAsterisk(t *testing.T) {
 }
 
 func TestNextTokenLessThan(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := "<"
 	tests := []struct {
 		expectedType    token.TokenType
@@ -218,7 +213,6 @@ func TestNextTokenLessThan(t *testing.T) {
 }
 
 func TestNextTokenGreaterThan(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := ">"
 	tests := []struct {
 		expectedType    token.TokenType
