@@ -366,7 +366,6 @@ func TestNextTokenReturn(t *testing.T) {
 }
 
 func TestNextTokenEqualEqual(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := "=="
 
 	tests := []struct {
@@ -390,7 +389,6 @@ func TestNextTokenEqualEqual(t *testing.T) {
 }
 
 func TestNextTokenNotEqual(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := "!="
 
 	tests := []struct {

@@ -37,7 +37,11 @@ func (l *Scanner) NextToken() token.Token {
 	case '}':
 		tok = newToken(token.RBRACE, l.ch)
 	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
+		if eqToken, isDoubleEqual := l.makeTwoCharToken(token.EQ, '='); isDoubleEqual {
+			tok = eqToken
+		} else {
+			tok = newToken(token.ASSIGN, l.ch)
+		}
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
 	case '-':
@@ -51,7 +55,11 @@ func (l *Scanner) NextToken() token.Token {
 	case '>':
 		tok = newToken(token.GT, l.ch)
 	case '!':
-		tok = newToken(token.BANG, l.ch)
+		if notEqToken, isNotEqual := l.makeTwoCharToken(token.NOT_EQ, '='); isNotEqual {
+			tok = notEqToken
+		} else {
+			tok = newToken(token.BANG, l.ch)
+		}
 	case ',':
 		tok = newToken(token.COMMA, l.ch)
 	case ';':
@@ -136,4 +144,14 @@ func (l *Scanner) peekChar() byte {
 		return 0
 	}
 	return l.input[l.readPosition]
+}
+
+// makeTwoCharToken checks if the next character matches 'expected', and if so, advances and returns a token with the combined literal.
+func (l *Scanner) makeTwoCharToken(tokenType token.TokenType, expected byte) (token.Token, bool) {
+	if l.peekChar() == expected {
+		ch := l.ch
+		l.readChar()
+		return token.Token{Type: tokenType, Literal: string(ch) + string(l.ch)}, true
+	}
+	return token.Token{}, false
 }
