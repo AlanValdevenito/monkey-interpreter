@@ -22,80 +22,80 @@ func New(input string) *Scanner {
 // ----- Public methods -----
 
 // NextToken returns the next token from the input.
-func (l *Scanner) NextToken() token.Token {
+func (s *Scanner) NextToken() token.Token {
 	var tok token.Token
 
-	l.skipWhitespace()
+	s.skipWhitespace()
 
-	switch l.ch {
+	switch s.ch {
 	case '(': 
-		tok = newToken(token.LPAREN, l.ch)
+		tok = newToken(token.LPAREN, s.ch)
 	case ')':
-		tok = newToken(token.RPAREN, l.ch)
+		tok = newToken(token.RPAREN, s.ch)
 	case '{':
-		tok = newToken(token.LBRACE, l.ch)
+		tok = newToken(token.LBRACE, s.ch)
 	case '}':
-		tok = newToken(token.RBRACE, l.ch)
+		tok = newToken(token.RBRACE, s.ch)
 	case '=':
-		if eqToken, isDoubleEqual := l.makeTwoCharToken(token.EQ, '='); isDoubleEqual {
+		if eqToken, isDoubleEqual := s.makeTwoCharToken(token.EQ, '='); isDoubleEqual {
 			tok = eqToken
 		} else {
-			tok = newToken(token.ASSIGN, l.ch)
+			tok = newToken(token.ASSIGN, s.ch)
 		}
 	case '+':
-		tok = newToken(token.PLUS, l.ch)
+		tok = newToken(token.PLUS, s.ch)
 	case '-':
-		tok = newToken(token.MINUS, l.ch)
+		tok = newToken(token.MINUS, s.ch)
 	case '/':
-		tok = newToken(token.SLASH, l.ch)
+		tok = newToken(token.SLASH, s.ch)
 	case '*':
-		tok = newToken(token.ASTERISK, l.ch)
+		tok = newToken(token.ASTERISK, s.ch)
 	case '<':
-		tok = newToken(token.LT, l.ch)
+		tok = newToken(token.LT, s.ch)
 	case '>':
-		tok = newToken(token.GT, l.ch)
+		tok = newToken(token.GT, s.ch)
 	case '!':
-		if notEqToken, isNotEqual := l.makeTwoCharToken(token.NOT_EQ, '='); isNotEqual {
+		if notEqToken, isNotEqual := s.makeTwoCharToken(token.NOT_EQ, '='); isNotEqual {
 			tok = notEqToken
 		} else {
-			tok = newToken(token.BANG, l.ch)
+			tok = newToken(token.BANG, s.ch)
 		}
 	case ',':
-		tok = newToken(token.COMMA, l.ch)
+		tok = newToken(token.COMMA, s.ch)
 	case ';':
-		tok = newToken(token.SEMICOLON, l.ch)
+		tok = newToken(token.SEMICOLON, s.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
 	default:
-		if isLetter(l.ch) {
-			tok.Literal = l.readIdentifier()
+		if isLetter(s.ch) {
+			tok.Literal = s.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
 			return tok
-		} else if isDigit(l.ch) {
+		} else if isDigit(s.ch) {
 			tok.Type = token.INT
-			tok.Literal = l.readNumber()
+			tok.Literal = s.readNumber()
 			return tok
 		} else {
-			tok = newToken(token.ILLEGAL, l.ch)
+			tok = newToken(token.ILLEGAL, s.ch)
 		}
 	}
 
-	l.readChar()
+	s.readChar()
 	return tok
 }
 
 // ----- Private methods -----
 
 // readChar reads the next character from the input and advances the positions accordingly.
-func (l *Scanner) readChar() {
-	if l.readPosition >= len(l.input) {
-		l.ch = 0 // ASCII code for NUL, signifies end of input
+func (s *Scanner) readChar() {
+	if s.readPosition >= len(s.input) {
+		s.ch = 0 // ASCII code for NUL, signifies end of input
 	} else {
-		l.ch = l.input[l.readPosition]
+		s.ch = s.input[s.readPosition]
 	}
-	l.position = l.readPosition
-	l.readPosition++
+	s.position = s.readPosition
+	s.readPosition++
 }
 
 // newToken creates a new token with the given type and character.
@@ -109,18 +109,18 @@ func isLetter(ch byte) bool {
 }
 
 // readIdentifier reads an identifier from the input and returns it as a string.
-func (l *Scanner) readIdentifier() string {
-	position := l.position
-	for isLetter(l.ch) {
-		l.readChar()
+func (s *Scanner) readIdentifier() string {
+	position := s.position
+	for isLetter(s.ch) {
+		s.readChar()
 	}
-	return l.input[position:l.position]
+	return s.input[position:s.position]
 }
 
 // skipWhitespace advances the scanner's position past any whitespace characters.
-func (l *Scanner) skipWhitespace() {
-	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
-		l.readChar()
+func (s *Scanner) skipWhitespace() {
+	for s.ch == ' ' || s.ch == '\t' || s.ch == '\n' || s.ch == '\r' {
+		s.readChar()
 	}
 }
 
@@ -130,28 +130,28 @@ func isDigit(ch byte) bool {
 }
 
 // readNumber reads a number from the input and returns it as a string.
-func (l *Scanner) readNumber() string {
-	position := l.position
-	for isDigit(l.ch) {
-		l.readChar()
+func (s *Scanner) readNumber() string {
+	position := s.position
+	for isDigit(s.ch) {
+		s.readChar()
 	}
-	return l.input[position:l.position]
+	return s.input[position:s.position]
 }
 
 // peekChar returns the next character without advancing the scanner's position.
-func (l *Scanner) peekChar() byte {
-	if l.readPosition >= len(l.input) {
+func (s *Scanner) peekChar() byte {
+	if s.readPosition >= len(s.input) {
 		return 0
 	}
-	return l.input[l.readPosition]
+	return s.input[s.readPosition]
 }
 
 // makeTwoCharToken checks if the next character matches 'expected', and if so, advances and returns a token with the combined literal.
-func (l *Scanner) makeTwoCharToken(tokenType token.TokenType, expected byte) (token.Token, bool) {
-	if l.peekChar() == expected {
-		ch := l.ch
-		l.readChar()
-		return token.Token{Type: tokenType, Literal: string(ch) + string(l.ch)}, true
+func (s *Scanner) makeTwoCharToken(tokenType token.TokenType, expected byte) (token.Token, bool) {
+	if s.peekChar() == expected {
+		ch := s.ch
+		s.readChar()
+		return token.Token{Type: tokenType, Literal: string(ch) + string(s.ch)}, true
 	}
 	return token.Token{}, false
 }
