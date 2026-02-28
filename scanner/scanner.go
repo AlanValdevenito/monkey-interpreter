@@ -129,3 +129,11 @@ func (l *Scanner) readNumber() string {
 	}
 	return l.input[position:l.position]
 }
+
+// peekChar returns the next character without advancing the scanner's position.
+func (l *Scanner) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	}
+	return l.input[l.readPosition]
+}
