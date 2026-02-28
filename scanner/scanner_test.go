@@ -41,7 +41,6 @@ func TestNextToken(t *testing.T) {
 }
 
 func TestIdentifiersAndKeywordsAndNumbers(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := `let five = 5;
 			  let ten = 10;
 

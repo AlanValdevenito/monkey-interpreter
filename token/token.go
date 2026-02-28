@@ -1,14 +1,5 @@
 package token
 
-// TokenType is a string that represents the type of a token.
-type TokenType string
-
-// Token represents a lexical token with its type and literal value.
-type Token struct {
-	Type    TokenType
-	Literal string
-}
-
 const (
 	ILLEGAL = "ILLEGAL" // Special type. Signifies a token/character we don't know about.
 	EOF     = "EOF" // Special type. Signifies we've reached the end of the file/input.
@@ -34,3 +25,26 @@ const (
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
 )
+
+// keywords is a map of reserved keywords in the Monkey language.
+var keywords = map[string]TokenType{
+	"fn":  FUNCTION,
+	"let": LET,
+}
+
+// TokenType is a string that represents the type of a token.
+type TokenType string
+
+// Token represents a lexical token with its type and literal value.
+type Token struct {
+	Type    TokenType
+	Literal string
+}
+
+// LookupIdent checks if the given identifier is a reserved keyword and returns the appropriate token type.
+func LookupIdent(ident string) TokenType {
+	if tok, ok := keywords[ident]; ok {
+		return tok
+	}
+	return IDENT
+}
