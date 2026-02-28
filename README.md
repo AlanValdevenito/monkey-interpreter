@@ -25,3 +25,27 @@ Although compact, Monkey includes many powerful language **features**:
 ```bash
 make run
 ```
+
+## Running the linter
+
+To check code quality and style, run:
+
+```bash
+make linter
+```
+
+This uses [golangci-lint](https://golangci-lint.run/) with a 5-minute timeout.
+
+## Running the tests
+
+To run all tests with coverage:
+
+```bash
+make test
+```
+
+To run only the scanner package tests:
+
+```bash
+make test/scanner
+```
