@@ -1,7 +1,9 @@
 package token
 
+// TokenType is a string that represents the type of a token.
 type TokenType string
 
+// Token represents a lexical token with its type and literal value.
 type Token struct {
 	Type    TokenType
 	Literal string

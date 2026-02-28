@@ -4,6 +4,7 @@ import (
 	"github.com/AlanValdevenito/monkey-interpreter/token"
 )
 
+// Scanner is responsible for reading the input string and producing tokens.
 type Scanner struct {
 	input        string
 	position     int  // current position in input (points to current char)
@@ -11,13 +12,16 @@ type Scanner struct {
 	ch           byte // current char under examination
 }
 
+// New returns a new instance of Scanner with the given input string.
 func New(input string) *Scanner {
 	s := &Scanner{input: input}
 	s.readChar()
 	return s
 }
 
+// ----- Public methods -----
 
+// NextToken returns the next token from the input.
 func (l *Scanner) NextToken() token.Token {
 	var tok token.Token
 
@@ -47,8 +51,9 @@ func (l *Scanner) NextToken() token.Token {
 	return tok
 }
 
-// ----- Helper methods -----
+// ----- Private methods -----
 
+// readChar reads the next character from the input and advances the positions accordingly.
 func (l *Scanner) readChar() {
 	if l.readPosition >= len(l.input) {
 		l.ch = 0
@@ -59,6 +64,7 @@ func (l *Scanner) readChar() {
 	l.readPosition++
 }
 
+// newToken creates a new token with the given type and character.
 func newToken(tokenType token.TokenType, ch byte) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch)}
 }
