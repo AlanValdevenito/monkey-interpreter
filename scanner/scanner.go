@@ -28,11 +28,7 @@ func (l *Scanner) NextToken() token.Token {
 	l.skipWhitespace()
 
 	switch l.ch {
-	case '=':
-		tok = newToken(token.ASSIGN, l.ch)
-	case '+':
-		tok = newToken(token.PLUS, l.ch)
-	case '(':
+	case '(': 
 		tok = newToken(token.LPAREN, l.ch)
 	case ')':
 		tok = newToken(token.RPAREN, l.ch)
@@ -40,6 +36,10 @@ func (l *Scanner) NextToken() token.Token {
 		tok = newToken(token.LBRACE, l.ch)
 	case '}':
 		tok = newToken(token.RBRACE, l.ch)
+	case '=':
+		tok = newToken(token.ASSIGN, l.ch)
+	case '+':
+		tok = newToken(token.PLUS, l.ch)
 	case ',':
 		tok = newToken(token.COMMA, l.ch)
 	case ';':
