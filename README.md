@@ -26,6 +26,16 @@ Although compact, Monkey includes many powerful language **features**:
 make run
 ```
 
+## Running the interpreter with a Monkey script file
+
+You can run the interpreter and pass a Monkey source file to tokenize and display its tokens:
+
+```bash
+make run/file file=<f>
+```
+
+Replace `f` with any Monkey source file you want to process.
+
 ## Running the linter
 
 To check code quality and style, run:
