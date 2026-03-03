@@ -1,5 +1,9 @@
 package ast
 
+import (
+	"github.com/AlanValdevenito/monkey-interpreter/token"
+)
+
 // This file defines the abstract syntax tree (AST) structures for the Monkey programming language.
 
 // Node is the base interface for all AST nodes.
@@ -35,3 +39,24 @@ func (p *Program) TokenLiteral() string {
 		return ""
 	}
 }
+
+// LetStatement represents a variable declaration in the Monkey language.
+// The struct contains the token for the 'let' keyword, the name of the variable being declared, and the expression that represents the value being assigned to the variable.
+type LetStatement struct {
+	Token token.Token
+	Name  *Identifier
+	Value Expression
+}
+
+func (ls *LetStatement) statementNode()       {} // LetStatement struct implements the Statement interface, so we need to define the statementNode method.
+func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal }
+
+// Identifier represents a variable name in the Monkey language.
+// The struct contains the token for the identifier and the string value of the identifier.
+type Identifier struct {
+	Token token.Token
+	Value string
+}
+
+func (i *Identifier) expressionNode()      {} // Identifier struct implements the Expression interface, so we need to define the expressionNode method.
+func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
