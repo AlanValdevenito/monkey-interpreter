@@ -31,6 +31,11 @@ test/scanner:
 	@ echo "Running tests in the scanner package..."
 	@ go test -v -cover ./scanner/...
 
+## test/parser: Run tests in the parser package
+test/parser:
+	@ echo "Running tests in the parser package..."
+	@ go test -v -cover ./parser/...
+
 # ---------- Quality control ----------
 
 ## linter: Run linter
