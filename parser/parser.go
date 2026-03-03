@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/AlanValdevenito/monkey-interpreter/ast"
 	"github.com/AlanValdevenito/monkey-interpreter/scanner"
 	"github.com/AlanValdevenito/monkey-interpreter/token"
@@ -11,10 +13,15 @@ type Parser struct {
 
 	currentToken token.Token
 	peekToken    token.Token
+
+	errors []string
 }
 
 func New(s *scanner.Scanner) *Parser {
-	p := &Parser{s: s}
+	p := &Parser{
+		s:      s,
+		errors: []string{},
+	}
 
 	p.nextToken()
 	p.nextToken()
@@ -38,6 +45,11 @@ func (p *Parser) ParseProgram() *ast.Program {
 	}
 
 	return program
+}
+
+// Errors returns a slice of error messages encountered during parsing.
+func (p *Parser) Errors() []string {
+	return p.errors
 }
 
 // ----- Private methods -----
@@ -80,6 +92,12 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 	return stmt
 }
 
+// peekError adds an error message to the parser's error list when the next token does not match the expected type.
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
+}
+
 // ----- Utility methods -----
 
 // currentTokenIs checks if the current token matches the given type.
@@ -98,6 +116,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.nextToken()
 		return true
 	} else {
+		p.peekError(t)
 		return false
 	}
 }
