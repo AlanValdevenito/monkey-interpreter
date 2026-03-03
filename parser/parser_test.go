@@ -8,8 +8,6 @@ import (
 )
 
 func TestLetStatements(t *testing.T) {
-	t.Skip("Not implemented yet")
-
 	input := ` let x = 5;
 			   let y = 10;
 			   let foobar = 838383;`
