@@ -28,7 +28,7 @@ func (s *Scanner) NextToken() token.Token {
 	s.skipWhitespace()
 
 	switch s.ch {
-	case '(': 
+	case '(':
 		tok = newToken(token.LPAREN, s.ch)
 	case ')':
 		tok = newToken(token.RPAREN, s.ch)

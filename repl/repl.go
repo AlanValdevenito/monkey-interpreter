@@ -1,4 +1,3 @@
-
 package repl
 
 import (
@@ -6,8 +5,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/AlanValdevenito/monkey-interpreter/token"
 	"github.com/AlanValdevenito/monkey-interpreter/scanner"
+	"github.com/AlanValdevenito/monkey-interpreter/token"
 )
 
 const PROMPT = ">> "

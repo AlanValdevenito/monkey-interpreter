@@ -353,7 +353,7 @@ func TestNextTokenReturn(t *testing.T) {
 	}
 
 	l := New(input)
-	
+
 	for i, tt := range tests {
 		tok := l.NextToken()
 		if tok.Type != tt.expectedType {

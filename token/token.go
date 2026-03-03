@@ -2,11 +2,11 @@ package token
 
 const (
 	ILLEGAL = "ILLEGAL" // Special type. Signifies a token/character we don't know about.
-	EOF     = "EOF" // Special type. Signifies we've reached the end of the file/input.
+	EOF     = "EOF"     // Special type. Signifies we've reached the end of the file/input.
 
 	// Identifiers + literals
-	IDENT  = "IDENT"  // add, foobar, x, y, ...
-	INT    = "INT"    // 1343456
+	IDENT = "IDENT" // add, foobar, x, y, ...
+	INT   = "INT"   // 1343456
 
 	// Operators
 	ASSIGN   = "="
@@ -16,7 +16,7 @@ const (
 	ASTERISK = "*"
 	LT       = "<"
 	GT       = ">"
-	BANG	 = "!"
+	BANG     = "!"
 	EQ       = "=="
 	NOT_EQ   = "!="
 
@@ -24,10 +24,10 @@ const (
 	COMMA     = ","
 	SEMICOLON = ";"
 
-	LPAREN   = "("
-	RPAREN   = ")"
-	LBRACE   = "{"
-	RBRACE   = "}"
+	LPAREN = "("
+	RPAREN = ")"
+	LBRACE = "{"
+	RBRACE = "}"
 
 	// Keywords
 	FUNCTION = "FUNCTION"
@@ -41,12 +41,12 @@ const (
 
 // keywords is a map of reserved keywords in the Monkey language.
 var keywords = map[string]TokenType{
-	"fn":  FUNCTION,
-	"let": LET,
-	"true": TRUE,
-	"false": FALSE,
-	"if": IF,
-	"else": ELSE,
+	"fn":     FUNCTION,
+	"let":    LET,
+	"true":   TRUE,
+	"false":  FALSE,
+	"if":     IF,
+	"else":   ELSE,
 	"return": RETURN,
 }
 
