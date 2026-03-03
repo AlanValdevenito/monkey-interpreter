@@ -20,42 +20,27 @@ Although compact, Monkey includes many powerful language **features**:
 9. Arrays  
 10. Hash maps  
 
-## Running the interpreter
+## Makefile Commands
+
+To see all available commands, run:
 
 ```bash
-make run
+make help
 ```
 
-## Running the interpreter with a Monkey script file
+This will display a list of commands and their descriptions. Here are the available commands:
 
-You can run the interpreter and pass a Monkey source file to tokenize and display its tokens:
+| Command         | Description                                 |
+|-----------------|---------------------------------------------|
+| help            | Show available commands                     |
+| run             | Run the interpreter                         |
+| run/file        | Run the interpreter with a specified file   |
+| test            | Run tests with coverage                     |
+| test/scanner    | Run tests in the scanner package            |
+| linter          | Run linter (uses golangci-lint)             |
+| fmt             | Format code                                 |
+| vet             | Run go vet                                  |
+| tidy            | Clean module dependencies                   |
+| audit           | Run full quality checks (all of the above)  |
 
-```bash
-make run/file file=<f>
-```
-
-Replace `f` with any Monkey source file you want to process.
-
-## Running the linter
-
-To check code quality and style, run:
-
-```bash
-make linter
-```
-
-This uses [golangci-lint](https://golangci-lint.run/) with a 5-minute timeout.
-
-## Running the tests
-
-To run all tests with coverage:
-
-```bash
-make test
-```
-
-To run only the scanner package tests:
-
-```bash
-make test/scanner
-```
+For more details on each command, use `make help`.
