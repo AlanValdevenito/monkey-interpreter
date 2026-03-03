@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"github.com/AlanValdevenito/monkey-interpreter/ast"
 	"github.com/AlanValdevenito/monkey-interpreter/scanner"
 	"github.com/AlanValdevenito/monkey-interpreter/token"
 )
@@ -20,6 +21,14 @@ func New(s *scanner.Scanner) *Parser {
 
 	return p
 }
+
+// ----- Public methods -----
+
+func (p *Parser) ParseProgram() *ast.Program {
+	return nil
+}
+
+// ----- Private methods -----
 
 func (p *Parser) nextToken() {
 	p.currentToken = p.peekToken
