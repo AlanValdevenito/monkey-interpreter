@@ -44,7 +44,6 @@ func TestLetStatements(t *testing.T) {
 }
 
 func TestReturnStatements(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := ` return 5;
 			   return 10;
 			   return 993322;`
