@@ -36,6 +36,11 @@ test/parser:
 	@ echo "Running tests in the parser package..."
 	@ go test -v -cover ./parser/...
 
+## test/ast: Run tests in the ast package
+test/ast:
+	@ echo "Running tests in the ast package..."
+	@ go test -v -cover ./ast/...
+
 # ---------- Quality control ----------
 
 ## linter: Run linter
