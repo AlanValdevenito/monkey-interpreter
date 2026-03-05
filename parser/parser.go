@@ -8,6 +8,21 @@ import (
 	"github.com/AlanValdevenito/monkey-interpreter/token"
 )
 
+type (
+	prefixParseFn func() ast.Expression
+)
+
+const (
+	_ int = iota // We use iota to create a set of constants that represent the precedence of different operators. The blank identifier (_) is used to skip the zero value, so that our precedence levels start at 1.
+	LOWEST
+	EQUALS      // Example: ==
+	LESSGREATER // Example: > or <
+	SUM         // Example: +
+	PRODUCT     // Example: *
+	PREFIX      // Example: -X or !X
+	CALL        // Example: myFunction(X)
+)
+
 type Parser struct {
 	s *scanner.Scanner
 
@@ -15,6 +30,8 @@ type Parser struct {
 	peekToken    token.Token
 
 	errors []string
+
+	prefixParseFns map[token.TokenType]prefixParseFn
 }
 
 func New(s *scanner.Scanner) *Parser {
@@ -25,6 +42,10 @@ func New(s *scanner.Scanner) *Parser {
 
 	p.nextToken()
 	p.nextToken()
+
+	// Registering the prefix parse functions for the different token types.
+	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
+	p.registerPrefix(token.IDENT, p.parseIdentifier)
 
 	return p
 }
@@ -38,9 +59,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 	for p.currentToken.Type != token.EOF {
 		stmt := p.parseStatement()
-		if stmt != nil {
-			program.Statements = append(program.Statements, stmt)
-		}
+		program.Statements = append(program.Statements, stmt)
 		p.nextToken()
 	}
 
@@ -68,7 +87,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	case token.RETURN:
 		return p.parseReturnStatement()
 	default:
-		return nil
+		return p.parseExpressionStatement()
 	}
 }
 
@@ -108,10 +127,42 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	return stmt
 }
 
+// parseExpressionStatement parses an expression statement and returns an AST node representing it.
+func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
+	stmt := &ast.ExpressionStatement{Token: p.currentToken}
+
+	stmt.Expression = p.parseExpression(LOWEST)
+
+	if p.peekTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
+}
+
+// parseExpression parses an expression based on the current token and the given precedence level. It uses the prefix and infix parse functions registered for the current token type to parse the expression correctly.
+func (p *Parser) parseExpression(precedence int) ast.Expression {
+	prefix := p.prefixParseFns[p.currentToken.Type]
+	if prefix == nil {
+		return nil
+	}
+
+	leftExp := prefix()
+
+	return leftExp
+}
+
 // peekError adds an error message to the parser's error list when the next token does not match the expected type.
 func (p *Parser) peekError(t token.TokenType) {
 	msg := fmt.Sprintf("expected next token to be %s, got %s instead", t, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
+}
+
+// ----- Pratt parsing methods -----
+
+// parseIdentifier parses an identifier and returns an AST node representing it.
+func (p *Parser) parseIdentifier() ast.Expression {
+	return &ast.Identifier{Token: p.currentToken, Value: p.currentToken.Literal}
 }
 
 // ----- Utility methods -----
@@ -135,4 +186,9 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.peekError(t)
 		return false
 	}
+}
+
+// registerPrefix registers a prefix parse function for a given token type.
+func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
+	p.prefixParseFns[tokenType] = fn
 }

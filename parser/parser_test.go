@@ -72,7 +72,6 @@ func TestReturnStatements(t *testing.T) {
 }
 
 func TestIdentifierExpression(t *testing.T) {
-	t.Skip("Not implemented yet")
 	input := `foobar;`
 
 	s := scanner.New(input)
