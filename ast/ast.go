@@ -60,3 +60,11 @@ type Identifier struct {
 
 func (i *Identifier) expressionNode()      {} // Identifier struct implements the Expression interface, so we need to define the expressionNode method.
 func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
+
+type ReturnStatement struct {
+	Token       token.Token
+	ReturnValue Expression
+}
+
+func (rs *ReturnStatement) statementNode()       {}
+func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
