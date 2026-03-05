@@ -6,11 +6,29 @@ import (
 
 // This file defines the abstract syntax tree (AST) structures for the Monkey programming language.
 
+// Program is the root node of every AST our parser produces.
+// A program consists of a series of statements.
+type Program struct {
+	Statements []Statement
+}
+
+func (p *Program) TokenLiteral() string {
+	if len(p.Statements) > 0 {
+		return p.Statements[0].TokenLiteral()
+	} else {
+		return ""
+	}
+}
+
+// ---------- AST Node definition ----------
+
 // Node is the base interface for all AST nodes.
 // Every node in our AST has to implement the Node interface.
 type Node interface {
-	TokenLiteral() string // TokenLiteral returns the literal value of the token associated with this node. Will be used only for debugging and testing.
+	TokenLiteral() string // TokenLiteral returns the literal value of the token associated with this node. Will be used only for debugging and testing.}
 }
+
+// ---------- Statement and Expression interfaces ----------
 
 // Statements are an interface that represents a statement in the Monkey language.
 // Nodes that are statements will implement this interface.
@@ -26,19 +44,7 @@ type Expression interface {
 	expressionNode()
 }
 
-// Program is the root node of every AST our parser produces.
-// A program consists of a series of statements.
-type Program struct {
-	Statements []Statement
-}
-
-func (p *Program) TokenLiteral() string {
-	if len(p.Statements) > 0 {
-		return p.Statements[0].TokenLiteral()
-	} else {
-		return ""
-	}
-}
+// ---------- Statement nodes ----------
 
 // LetStatement represents a variable declaration in the Monkey language.
 // The struct contains the token for the 'let' keyword, the name of the variable being declared, and the expression that represents the value being assigned to the variable.
@@ -68,3 +74,11 @@ type ReturnStatement struct {
 
 func (rs *ReturnStatement) statementNode()       {}
 func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
+
+type ExpressionStatement struct {
+	Token      token.Token
+	Expression Expression
+}
+
+func (es *ExpressionStatement) statementNode()       {}
+func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
